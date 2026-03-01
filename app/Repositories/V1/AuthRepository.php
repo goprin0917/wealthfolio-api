@@ -7,6 +7,7 @@ use App\Models\User;
 use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -96,11 +97,7 @@ class AuthRepository implements AuthRepositoryInterface
 
             return $this->generateTokenPair($user);
         } catch (Exception $e) {
-            throw ValidationException::withMessages([
-                'refresh_token' => [
-                    'The provided refresh token is invalid or expired.'
-                ]
-            ]);
+            throw new AuthenticationException('The provided refresh token is invalid or expired.');
         }
     }
 

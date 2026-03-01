@@ -30,11 +30,10 @@ class AuthController extends Controller
 
         $tokens = $this->authRepository->login($credentials);
 
-        return response()->json([
-            'access_token' => $tokens['access_token'],
-            'refresh_token' => $tokens['refresh_token'],
-            'token_type' => 'Bearer'
-        ]);
+        return $this->respondWithTokens(
+            $tokens['access_token'],
+            $tokens['refresh_token']
+        );
     }
 
     public function me(): UserResource
