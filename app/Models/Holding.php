@@ -13,7 +13,7 @@ class Holding extends Model
         'name',
         'type',
         'quantity',
-        'average_price'
+        'buy_price'
     ];
 
     protected function casts(): array

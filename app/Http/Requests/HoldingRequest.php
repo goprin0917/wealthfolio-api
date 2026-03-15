@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\HoldingTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rule;
 
 class HoldingRequest extends FormRequest
 {
@@ -40,7 +40,7 @@ class HoldingRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                new Enum(HoldingTypeEnum::class)
+                Rule::enum(HoldingTypeEnum::class)
             ],
             'quantity' => [
                 'required',
@@ -48,7 +48,7 @@ class HoldingRequest extends FormRequest
                 'min:0',
                 'decimal:0,2'
             ],
-            'average_price' => [
+            'buy_price' => [
                 'required',
                 'numeric',
                 'min:0',
