@@ -22,7 +22,7 @@ class HoldingResource extends JsonResource
             'type' => $this->type,
             'quantity' => $this->quantity,
             'user' => new UserResource($this->whenLoaded('user')),
-            'average_price' => $this->average_price,
+            'buy_price' => $this->buy_price,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

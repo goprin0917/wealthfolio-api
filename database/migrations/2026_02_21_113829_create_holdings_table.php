@@ -18,7 +18,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->string('type');
             $table->decimal('quantity', 10, 2);
-            $table->decimal('average_price', 10, 2);
+            $table->decimal('buy_price', 10, 2);
             $table->timestamps();
         });
     }

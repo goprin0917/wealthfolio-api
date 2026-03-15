@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\HoldingRequest;
 use App\Http\Resources\V1\HoldingResource;
 use App\Interfaces\V1\HoldingRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class HoldingController extends Controller
 {
@@ -18,9 +20,16 @@ class HoldingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResource
+    public function index(Request $request): JsonResource
     {
-        $holdings = $this->holdingRepository->fetchAll();
+        $filters = $request->only([
+            'search',
+            'sort_by',
+            'sort_direction',
+            'per_page'
+        ]);
+
+        $holdings = $this->holdingRepository->search($filters);
 
         return HoldingResource::collection($holdings);
     }
@@ -31,15 +40,14 @@ class HoldingController extends Controller
     public function store(HoldingRequest $request): HoldingResource
     {
         $validated = $request->only([
-            'user_id',
             'symbol',
             'name',
             'type',
             'quantity',
-            'average_price'
+            'buy_price'
         ]);
 
-        $holding = $this->holdingRepository->create($validated);
+        $holding = $this->holdingRepository->create($validated, Auth::id());
 
         return new HoldingResource($holding);
     }
@@ -60,12 +68,11 @@ class HoldingController extends Controller
     public function update(HoldingRequest $request, string $id): HoldingResource
     {
         $validated = $request->only([
-            'user_id',
             'symbol',
             'name',
             'type',
             'quantity',
-            'average_price'
+            'buy_price'
         ]);
 
         $holding = $this->holdingRepository->update($id, $validated);
